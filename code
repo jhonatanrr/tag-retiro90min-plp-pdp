@@ -1,0 +1,153 @@
+//FLAT ICON TEXT COMPRA HOY RECIBE HOY PDP
+$(document).ready(function () {
+
+    var queryStringHastaLasTres = null;
+    var timeHastaLasTres = new Date();
+    if (window.location.href.indexOf("/category/") != -1) {
+        if (
+            timeHastaLasTres.getHours() >= 8 &&
+            timeHastaLasTres.getHours() < 18
+        ) {
+			console.log(timeHastaLasTres.getDay())
+            // if (timeHastaLasTres.getDay() <= 5) {
+				console.log('in')
+                var startWorkerHastaLasTres = function startWorkerHastaLasTres() {
+                    if (typeof Worker !== "undefined") {
+                        if (typeof workerHastalasTres == "undefined") {
+                            workerHastalasTres = new Worker(
+                                "https://www.falabella.com.pe/static/RDF/site/home/linkmenuTop/worker_flag_hasta_tres.js?vid=9"
+                            );
+                            var arraySkusHastalasTres = [];
+                            $(".fb-pod__item__compare__input").each(function (index) {
+                                arraySkusHastalasTres.push($(this).val());
+                            });
+                            console.log("hasta las tres", arraySkusHastalasTres);
+                            workerHastalasTres.postMessage({
+                                msg: arraySkusHastalasTres
+                            });
+
+                            workerHastalasTres.onmessage = function (event) {
+                                console.log("hasta las tres", event.data);
+                                event.data.map(function (index) {
+                                    var htmlEntregaVenticuadroHoras =
+                                        '<div class="fb-flag-entrega--en-venticuadro-horas"><img src="https://www.falabella.com.pe/static/RDF/site/home/img/icono-express.png" style="width:150px;display:block;margin:0 auto;margin-left: 0px;"></div>';
+                                    var parentSkusDOM = $("#fb-pod__item__input-" + index)
+                                        .parent()
+                                        .closest("div");
+                                    var podItem = parentSkusDOM.parent().closest("div");
+                                    var sectionPodTop = podItem.find(
+                                        ".pod-body .section__pod-top"
+                                    );
+                                    var existFlagElement = sectionPodTop.find(
+                                        ".fb-flag-entrega--en-venticuadro-horas"
+                                    );
+                                    if (existFlagElement.length === 0) {
+                                        sectionPodTop.prepend(htmlEntregaVenticuadroHoras);
+                                    }
+                                });
+                            };
+
+                            $(window).scroll(function () {
+                                if ($(".fb-pod__item__compare__input").length > 0) {
+                                    if (queryStringHastaLasTres !== location.search) {
+                                        queryStringHastaLasTres = location.search;
+										var timeHastaLasTresScroll = new Date();
+										console.log(timeHastaLasTresScroll.getHours())
+                                        if (
+                                            timeHastaLasTresScroll.getHours() >= 8 &&
+                                            timeHastaLasTresScroll.getHours() < 18
+                                        ) {
+											console.log('s')
+                                            // if (timeHastaLasTresScroll.getDay() <= 5) {
+                                                if (
+                                                    $(".fb-flag-entrega--en-venticuadro-horas")
+                                                    .length <= 0
+                                                ) {
+
+                                                    var arraySkusHastalasTres = [];
+                                                    $(".fb-pod__item__compare__input").each(
+                                                        function (
+                                                            index
+                                                        ) {
+                                                            arraySkusHastalasTres.push($(
+                                                                this).val());
+                                                        });
+                                                    console.log(
+                                                        "hasta las tres on",
+                                                        arraySkusHastalasTres
+                                                    );
+                                                    workerHastalasTres.postMessage({
+                                                        msg: arraySkusHastalasTres
+                                                    });
+
+                                                    workerHastalasTres.onmessage = function (
+                                                        event) {
+                                                        console.log("hasta las tres on",
+                                                            event.data);
+                                                        event.data.map(function (index) {
+                                                            var htmlEntregaVenticuadroHoras =
+                                                                '<div class="fb-flag-entrega--en-venticuadro-horas"><img src="https://www.falabella.com.pe/static/RDF/site/home/img/icono-express.png" style="width:150px;display:block;margin:0 auto;margin-left: 0px;"></div>';
+                                                            var parentSkusDOM = $(
+                                                                    "#fb-pod__item__input-" +
+                                                                    index
+                                                                )
+                                                                .parent()
+                                                                .closest("div");
+                                                            var podItem =
+                                                                parentSkusDOM
+                                                                .parent()
+                                                                .closest("div");
+                                                            var sectionPodTop =
+                                                                podItem.find(
+                                                                    ".pod-body .section__pod-top"
+                                                                );
+                                                            var existFlagElement =
+                                                                sectionPodTop.find(
+                                                                    ".fb-flag-entrega--en-venticuadro-horas"
+                                                                );
+                                                            if (existFlagElement
+                                                                .length === 0) {
+                                                                sectionPodTop
+                                                                    .prepend(
+                                                                        htmlEntregaVenticuadroHoras
+                                                                    );
+                                                            }
+                                                        });
+                                                    };
+                                                }
+                                            // }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        console.log(
+                            "Sorry, your browser does not support Web Workers..."
+                        );
+                    }
+                };
+
+                var stopWorkerHastaLasTres = function stopWorkerHastaLasTres() {
+                    w.terminate();
+                    w = undefined;
+                };
+
+                var workerHastalasTres;
+
+                startWorkerHastaLasTres();
+            // }
+        }
+    }
+
+    if (window.location.href.indexOf("/product/") != -1) {
+        $.getScript(
+            "https://www.falabella.com.pe/static/RDF/site/home/linkmenuTop/flag_in_pdp.js?vid=19",
+            function (data, textStatus, jqxhr) {}
+        );
+    }
+
+    caches.delete("falabellaHighPerformance2");
+});
+
+//FIN FLAT ICON TEXT COMPRA HOY RECIBE HOY PDP
